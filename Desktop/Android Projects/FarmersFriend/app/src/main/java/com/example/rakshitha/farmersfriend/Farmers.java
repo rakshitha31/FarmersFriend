@@ -1,23 +1,36 @@
 package com.example.rakshitha.farmersfriend;
 
 public class Farmers {
-    private String name, phonenumber;
+    String name,desc;
+    double price;
+    int id;
+    int image;
 
-    public Farmers(String name, String phonenumber) {
+    public Farmers(String name, String desc, double price, int id, int image) {
         this.name = name;
-        this.phonenumber = phonenumber;
-    }
-
-    public Farmers(){
-
+        this.desc = desc;
+        this.price = price;
+        this.id = id;
+        this.image = image;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getPhonenumber() {
-        return phonenumber;
+    public String getDesc() {
+        return desc;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getImage() {
+        return image;
     }
 }
-

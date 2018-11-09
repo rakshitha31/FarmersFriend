@@ -35,6 +35,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.i18n.phonenumbers.NumberParseException;
@@ -74,6 +76,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private ProgressDialog mProgressDialog;
     private String userName,userMobileNumber;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mNameView = (AutoCompleteTextView) findViewById(R.id.name);
+        mAuth=FirebaseAuth.getInstance();
         populateAutoComplete();
 
         mPhoneView = (EditText) findViewById(R.id.phonenumber);
@@ -139,6 +143,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);
         mProgressDialog.setMessage("Sending Verification Code...");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user= mAuth.getCurrentUser();
+        if(user!=null){
+            startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+        }
+
     }
 
     @Override

@@ -193,44 +193,6 @@ public class VerificationActivity extends AppCompatActivity {
 
     }
 
-    private void signUpWithEmail()
-    {
-        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
-        mAuth.createUserWithEmailAndPassword(userName,userMobileNumber).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                if (task.isSuccessful()) {
-
-
-
-                    Farmers farmers = new Farmers(userName, userMobileNumber);
-
-                    mDatabaseReference.child(mAuth.getCurrentUser().getUid()).setValue(farmers).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-
-                            if (task.isSuccessful()) {
-                                if (mAuth.getCurrentUser() != null)
-                                    mAuth.getCurrentUser().sendEmailVerification();
-                                endTask();
-                            } else
-                                deleteUser();
-
-                        }
-                    });
-
-                } else {
-
-                    mProgressDialog.cancel();
-                    makeToast(task.getException().getMessage());
-                    finish();
-                }
-            }
-        });
-    }
 
     private void deleteUser(){
 

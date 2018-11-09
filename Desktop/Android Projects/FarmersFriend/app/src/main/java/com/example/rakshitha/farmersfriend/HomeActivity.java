@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -18,26 +19,59 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    RecyclerView shared_resources;
+    HomeAdapter adapter;
+    List<Farmers> item_list;
+    RecyclerView recyclerView;
+    DatabaseReference mDatabaseReference;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        shared_resources=(RecyclerView)findViewById(R.id.home_recyclerView);
+        recyclerView=(RecyclerView)findViewById(R.id.home_recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+        item_list = new ArrayList<>();
+        item_list.add(
+                new Farmers(
+                        "lohith",
+                        "Msrit college",
+                        50000,
+                        1,
+                        R.mipmap.ic_launcher
+                ));
+
+        item_list.add(
+                new Farmers(
+                        "Anil",
+                        "SJCIT college",
+                        40000,
+                        2,
+                        R.mipmap.ic_launcher_round));
+        adapter = new HomeAdapter(this,item_list);
+        recyclerView.setAdapter(adapter);
+
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(new Intent(HomeActivity.this,ShareActivity.class));
             }
         });
 
@@ -49,6 +83,13 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
     }
 
     @Override
